@@ -33,8 +33,7 @@ export default function Login() {
   const [textoNotificacion, setTextoNotificacion] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const bgUrl = '../../assets/images/inicio.png';
-  const logUrl = '../../assets/images/Logo1.png';
+  const logUrl = '../../assets/images/logoSimple.png';
   const backgroundImg = '../../assets/images/backgroundDefault.jpg';
 
   useEffect(() => {
@@ -75,7 +74,7 @@ export default function Login() {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
             <View >
-              {/* <Image source={require(logUrl)} style={styles.logo} /> */}
+              <Image source={require(logUrl)} style={styles.logo} />
               <Text style={styles.titulo}>MI KIOSKO</Text>
             </View>
             <View style={styles.subcontainer}>
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   logo: {
-    width: 293, height: 36,
+    width: 293, height: 130,
     marginTop: 33,
     alignSelf: 'center',
   },

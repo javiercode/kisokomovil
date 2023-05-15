@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ActivityIndicator, Alert, RefreshControl, StyleSheet, TouchableHighlight, View, SafeAreaView, ScrollView, Linking } from 'react-native';
+import { ActivityIndicator, Alert, RefreshControl, StyleSheet, TouchableHighlight, View, SafeAreaView, ScrollView, Linking, ImageBackground, Image } from 'react-native';
 import { DataTable, Text, Searchbar, Avatar, Card, IconButton, Title, Paragraph, Menu, Button, Divider, Chip } from 'react-native-paper';
 import Color from '../../utils/styles/Color';
 import { getAuth } from '../../store/login';
@@ -20,6 +20,8 @@ import { IProducto } from '../../utils/interfaces/IProducto';
 interface IMovimientoForm {
     codigoProducto: string,
 }
+const backgroundImg = '../../assets/images/logoSimple.png';
+const backgroundBanner = '../../assets/images/banner.jpg';
 
 type Props = NativeStackScreenProps<any, MenuPathEnum.MOVIMIENTO>;
 export default function ListProceso({ route, navigation }: Props) {
@@ -95,86 +97,88 @@ export default function ListProceso({ route, navigation }: Props) {
     };
 
     return (
-        <ScrollView >
-
-            <Card>
-                <Card.Content style={{ alignItems: 'center' }}>
-                    <Avatar.Icon size={40} icon="cash" color={Color.white} style={{ backgroundColor: Color.primary }} />
-                    <Text> Saldo Bs: {saldo} </Text>
-                </Card.Content>
-            </Card>
-
-            <Card key={"head-card"}>
-                <Card.Title key={"head-card-title"}
-                    title={"Escanea el producto"}
-                    titleStyle={{ textAlign: 'center' }}
-                />
-            </Card>
-
-
-            <View><Divider /></View>
-            <View>
-                <Button icon={"finance"} onPress={() => navMovimientos()}>Mis movimientos</Button>
-                {/* <IconButton icon="finance" size={20} onPress={() => navMovimientos()}>Ir</IconButton> */}
-            </View>
-            <View><Divider /></View>
-            {shoCam && <ScrollView >
-                <View>
-                    <QRCodeScanner
-                        // onRead={({data})=> {console.log(data); setData(data)}} 
-                        onRead={onSuccess}
-                        flashMode={RNCamera.Constants.FlashMode.off}
-                        containerStyle={{ width: '100%', height: 300 }}
-                        reactivate={true}
-                    // cameraStyle={{width:'100%',height:100}}
-                    />
-                    <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)} style={{alignContent:'center'}}/>
+        <ScrollView style={{backgroundColor:Color.white}}>
+            <View style={styles.bannerContainer}>
+                    <Image source={require(backgroundBanner)} style={styles.banner} />
                 </View>
-            </ScrollView>}
-            {!shoCam && <View>
-                <Button icon={"camera-enhance"} onPress={() => setShowCam(!shoCam)}>Comprar</Button>
-                {/* <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)}/> */}
-            </View>}
-            <View><Divider /></View>
+            <View style={styles.container}>
+                
+                <View style={styles.topBarContainer}>
+                    <Image source={require(backgroundImg)} style={styles.logo} />
+                    <Text style={styles.footerText}>{`Bienvenido ${getAuth().username}`}</Text>
+                </View>
+                <View style={styles.topBarContainer}>
+                    <Card style={{ width: '40%', height: '100%' }}>
+                        <Card.Content style={{ alignItems: 'center' }}>
+                            <Avatar.Icon size={40} icon="cash" color={Color.white} style={{ backgroundColor: Color.primary }} />
 
-            <View>
-                <DataTable>
-                    <DataTable.Header>
-                        <DataTable.Title textStyle={{ fontWeight: 'bold', fontSize: 12 }}>PRODUCTO</DataTable.Title>
-                        <DataTable.Title textStyle={{ fontWeight: 'bold', fontSize: 12 }} numeric>PRECIO</DataTable.Title>
-                        <DataTable.Title textStyle={{ fontWeight: 'bold', fontSize: 12 }} numeric>DESCUENTO</DataTable.Title>
-                        <DataTable.Title> </DataTable.Title>
-                    </DataTable.Header>
-                    {producto != null &&
-                        <DataTable.Row>
-                            <DataTable.Cell>{producto.nombre}</DataTable.Cell>
-                            <DataTable.Cell numeric>{`Bs. ${producto.monto}`}</DataTable.Cell>
-                            <DataTable.Cell numeric>{`Bs. ${producto.descuento}`}</DataTable.Cell>
-                            <DataTable.Cell numeric>
-                                <IconButton
-                                    icon="cart-arrow-up"
-                                    size={20}
-                                    onPress={() => saveMovimiento(producto.codigo)}
-                                />
-                            </DataTable.Cell>
-                        </DataTable.Row>
+                        </Card.Content>
+                    </Card>
+                    <Card style={{ width: '60%', height: '100%' }}>
+                        <Card.Content style={{ alignItems: 'center' }}>
+                            <Text style={styles.centerText}> Saldo Bs: {saldo} </Text>
+                        </Card.Content>
+                    </Card>
+                </View>
+                <View style={{ flex: 1, width: "100%" }}>
+                    <View>
+                        <Button icon={"finance"} onPress={() => navMovimientos()}>Mis movimientos</Button>
+                    </View>
+                    <View><Divider /></View>
+                    {shoCam && <ScrollView >
+                        <View>
+                            <QRCodeScanner
+                                // onRead={({data})=> {console.log(data); setData(data)}} 
+                                onRead={onSuccess}
+                                flashMode={RNCamera.Constants.FlashMode.off}
+                                containerStyle={{ width: '100%', height: 300 }}
+                                reactivate={true}
+                            // cameraStyle={{width:'100%',height:100}}
+                            />
+                            <IconButton icon="camera-enhance" size={50} iconColor={Color.white} onPress={() => setShowCam(!shoCam)} style={{ alignContent: 'center' }} />
+                        </View>
+                    </ScrollView>}
+                    {!shoCam && 
+                    <View>
+                        
+                        <Card style={{ width: '100%', height: '100%' }}>
+                            <Card.Content style={{ alignItems: 'center' }}>
+                                {/* <Button icon={"camera-enhance"} onPress={() => setShowCam(!shoCam)}>Comprar</Button> */}
+                                <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)} iconColor={Color.primary} style={{ alignContent: 'center' }} />
+                            </Card.Content>
+                        </Card>
+                    </View>
                     }
+                    <View><Divider /></View>
 
-                    {/* <DataTable.Pagination
-                        page={page}
-                        numberOfPages={3}
-                        onPageChange={(page) => setPage(page)}
-                        label="1-2 of 6"
-                        optionsPerPage={optionsPerPage}
-                        itemsPerPage={itemsPerPage}
-                        setItemsPerPage={setItemsPerPage}
-                        showFastPagination
-                        optionsLabel={'Rows per page'}
-                    /> */}
-                </DataTable>
-            </View>
-            <View>
-                <Chip icon="alert-circle" onPress={() => setMensaje("")} style={{ display: mensaje !== "" ? "flex" : "none", backgroundColor: Color.secondaryVariant }} textStyle={{ color: Color.white }} >{mensaje}</Chip>
+                    <View>
+                        {producto != null &&
+                            <DataTable>
+                                <DataTable.Header>
+                                    <DataTable.Title textStyle={{ fontWeight: 'bold', fontSize: 12 }}>PRODUCTO</DataTable.Title>
+                                    <DataTable.Title textStyle={{ fontWeight: 'bold', fontSize: 12 }} numeric>PRECIO</DataTable.Title>
+                                    <DataTable.Title textStyle={{ fontWeight: 'bold', fontSize: 12 }} numeric>DESCUENTO</DataTable.Title>
+                                    <DataTable.Title> </DataTable.Title>
+                                </DataTable.Header>
+                                <DataTable.Row>
+                                    <DataTable.Cell>{producto.nombre}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{`Bs. ${producto.monto}`}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{`Bs. ${producto.descuento}`}</DataTable.Cell>
+                                    <DataTable.Cell numeric>
+                                        <IconButton
+                                            icon="cart-arrow-up"
+                                            size={20}
+                                            onPress={() => saveMovimiento(producto.codigo)}
+                                        />
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+
+                            </DataTable>}
+                    </View>
+                    <View>
+                        <Chip icon="alert-circle" onPress={() => setMensaje("")} style={{ display: mensaje !== "" ? "flex" : "none", backgroundColor: Color.secondaryVariant }} textStyle={{ color: Color.white }} >{mensaje}</Chip>
+                    </View>
+                </View>
             </View>
 
         </ScrollView>
@@ -210,9 +214,14 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     container: {
-        backgroundColor: Color.white,
-        color: Color.black,
-        paddingBottom: 10
+        width: "100%",
+        flexDirecion: "row",
+        backgroundColor: Color.light,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        paddingTop: 0,
+        paddingBottom: 0,
+        flex: 1
     },
     map: {
         ...StyleSheet.absoluteFillObject,
@@ -225,9 +234,10 @@ const styles = StyleSheet.create({
 
     centerText: {
         flex: 1,
-        fontSize: 18,
-        padding: 32,
-        color: '#777'
+        fontSize: 25,
+        // padding: 32,
+        color: '#777',
+        fontWeight: 'bold'
     },
     textBold: {
         fontWeight: '500',
@@ -239,5 +249,60 @@ const styles = StyleSheet.create({
     },
     buttonTouchable: {
         padding: 16
-    }
+    },
+    bannerContainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        // paddingLeft: 20,
+        // paddingRight: 20,
+        paddingTop: 0,
+        // paddingBottom: 5,
+    },
+    topBarContainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 5,
+        paddingBottom: 5,
+    },
+    headingContainer: {
+        display: "flex",
+        justifyContent: "flex-start",
+        paddingLeft: 10,
+        width: "100%",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    headingText: {
+        fontSize: 20,
+        color: Color.muted,
+        fontWeight: "800",
+    },
+    footerText: {
+        fontSize: 20,
+        color: Color.muted,
+        fontWeight: "800",
+        paddingTop: '10%'
+    },
+    toBarText: {
+        fontSize: 15,
+        fontWeight: "600",
+    },
+    logo: {
+        width: 150, height: 100,
+        marginTop: 33,
+        alignSelf: 'center',
+    },
+    banner: {
+        width: '100%', height: 100,
+        marginTop: 33,
+        alignSelf: 'center',
+    },
 })

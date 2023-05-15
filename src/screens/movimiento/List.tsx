@@ -26,7 +26,7 @@ export default function List({ route, navigation }: Props) {
     const [saldo, setSaldo] = useState<number>(0.0);
     
     useEffect(() => {
-        setSaldo(100.00)
+        setSaldo(0.00)
         getList(paginaActual);
     }, []);
 

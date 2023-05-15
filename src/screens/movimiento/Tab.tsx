@@ -13,7 +13,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Movimiento from './index';
 import Movimientos from "../movimiento";
-import Productos from "../producto";
+import Marcas from "../marca";
 import Configuracion from "../configuracion";
 
 type Props = NativeStackScreenProps<any, MenuPathEnum.MOVIMIENTO_TAB>;
@@ -32,19 +32,19 @@ export default function Tarea({ route, navigation }: Props) {
               tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="cart-plus" color={Color.secondary} size={30} />),
               headerShown: false,
               tabBarLabelStyle: { fontSize: 15, color: Color.secondary, fontWeight: 'bold' },
-              tabBarActiveBackgroundColor: Color.primaryVariant
+              tabBarActiveBackgroundColor: Color.grayBackground
             }} />
-            <Tab.Screen name={MenuPathEnum.PRODUCTO} component={Productos} initialParams={{}} options={{
+            <Tab.Screen name={MenuPathEnum.PRODUCTO} component={Marcas} initialParams={{}} options={{
               tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="format-list-checks" color={Color.secondary} size={30} />),
               headerShown: false,
               tabBarLabelStyle: { fontSize: 15, color: Color.secondary, fontWeight: 'bold' },
-              tabBarActiveBackgroundColor: Color.primaryVariant
+              tabBarActiveBackgroundColor: Color.grayBackground
             }} />
             <Tab.Screen name={MenuPathEnum.SETTINGS} component={Configuracion} initialParams={{}} options={{
               tabBarIcon: ({ color, size }) => (<MaterialCommunityIcons name="cog" color={Color.secondary} size={30} />),
               headerShown: false,
               tabBarLabelStyle: { fontSize: 15, color: Color.secondary, fontWeight: 'bold' },
-              tabBarActiveBackgroundColor: Color.primaryVariant
+              tabBarActiveBackgroundColor: Color.grayBackground
             }} />
           
     </Tab.Navigator>
@@ -69,5 +69,6 @@ const styles = StyleSheet.create({
   avatarIcon: {
     backgroundColor: Color.primary,
   },
+  
 })
 

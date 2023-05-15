@@ -1,5 +1,5 @@
 export enum MenuPathEnum {
-  SETTINGS = 'CONFIG',
+  SETTINGS = 'Configuración',
   SETTINGS_HOME = 'Configuraciones',
   LOGOUT = 'Salir',
   LOGIN = 'Login',
@@ -14,7 +14,7 @@ export enum MenuPathEnum {
   TAREA_DETALLE = 'DetalleTarea',
   TAREA_ATTEND = 'Tarea',
   CLIENTE_HOME = 'Productos',
-  PRODUCTO = 'Productos',
+  PRODUCTO = 'Catalogo',
   CLIENTE_DETAIL = 'ClienteDetalle',
   CLIENTE_CREATE = 'ClienteCrear',
 }

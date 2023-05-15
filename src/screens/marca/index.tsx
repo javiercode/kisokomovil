@@ -8,9 +8,11 @@ import { getService } from '../../utils/HttpService';
 import { IProducto } from '../../utils/interfaces/IProducto';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuPathEnum } from '../../utils/enums/Login.enum';
+import { IMarca } from '../../utils/interfaces/IMarca';
+import CardContent from 'react-native-paper/lib/typescript/src/components/Card/CardContent';
 
 type Props = NativeStackScreenProps<any, MenuPathEnum.PRODUCTO>;
-export default function Cliente({ route, navigation }: Props) {
+export default function Marca({ route, navigation }: Props) {
     const [paginaActual, setPaginaActual] = useState(0);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -37,7 +39,7 @@ export default function Cliente({ route, navigation }: Props) {
 
     const getList = async (page: number) => {
         setLoading(true);
-        getService(`/producto/list/0/5`)
+        getService(`/marca/list/0/5`)
             .then(res => {
                 setLoading(false)
                 setRefreshing(false);
@@ -58,40 +60,36 @@ export default function Cliente({ route, navigation }: Props) {
 
     return (
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
-            <Card key={"head-card"}>
-                <Card.Title key={"head-card-title"}
-                    title={"Productos"}
-                    subtitle={"La Paz"}
-                    titleStyle={{ textAlign: 'center' }}
-                />
+            <View style={styles.container}>
+                
+            <Card key={"head-card"} style={{width:'100%'}}>
+                <Card.Content style={{ alignItems: 'center' }}>
+
+                <Text style={styles.footerText}>{`Nuestros proveedores`}</Text>  
+                </Card.Content>
             </Card>
             {loading && <ActivityIndicator animating={loading} key={"tarea-indicator"} />}
            
-            {dataList && dataList.map((producto: IProducto, index: number) => (
-                <View key={"tarea-view" + index}>
-                    <Card key={"tarea-card-key-" + index}>
-                        
+            {dataList && dataList.map((producto: IMarca, index: number) => (
+                <View key={"tarea-view" + index} style={styles.topBarContainer}>
+                    <Card key={"tarea-card-key-" + index} style={{width:'100%',backgroundColor:`${index%2==0?Color.grayBackground:Color.grisLight}`}} >
                             <Card.Title key={"tarea-card-title-key-" + index}
                                 title={producto.nombre}
                                 titleStyle={{ fontSize: 16 }}
                                 subtitleStyle={{ fontWeight: 'bold' }}
-                                // right={(props) => <IconButton size={30} icon="clipboard-arrow-right" 
-                                //     key={"tarea-card-title-icon-key-" + index} style={{ backgroundColor: Color.secondary }} />}
                             />
                         <Card.Content key={"tcard-key-" + index}>
                             <DataTable.Row key={"tcard-row-dir-key-" + index}>
-                                <DataTable.Cell key={"tcard-row-cell-dir-key-" + index}>Monto:</DataTable.Cell>
-                                <DataTable.Cell key={"tcard-row-cell-dir-val-" + index}>{producto?.monto}</DataTable.Cell>
+                                <DataTable.Cell key={"tcard-row-cell-dir-key-" + index}>Tipo:</DataTable.Cell>
+                                <DataTable.Cell key={"tcard-row-cell-dir-val-" + index}>{producto?.tipo}</DataTable.Cell>
                             </DataTable.Row >
-                            <DataTable.Row key={"tcard-row-fecha-key-" + index}>
-                                <DataTable.Cell key={"tcard-row-fecha-key-" + index}>Descuento</DataTable.Cell>
-                                <DataTable.Cell key={"tcard-row-fecha-val-" + index}>{producto.descuento }</DataTable.Cell>
-                            </DataTable.Row>
                         </Card.Content>
                     </Card>
                     <Divider key={"tarea-divider-key-" + index} />
                 </View>
             ))}
+            
+            </View>
         </ScrollView>
     )
 }
@@ -120,6 +118,35 @@ const styles = StyleSheet.create({
         margin: 2,
         width: '95%',
         paddingLeft: '4%'
+    },
+    container: {
+        width: "100%",
+        flexDirecion: "row",
+        backgroundColor: Color.light,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        paddingBottom: 0,
+        flex: 1
+    },
+    topBarContainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 5,
+        paddingBottom: 5,
+    },
+    footerText: {
+        fontSize: 30,
+        color: Color.muted,
+        fontWeight: "800",
+        paddingTop: '10%',        
+        // justifyContent: "space-between",
+        flexDirection:"row",
+        alignItems: "center",
     },
 })
 
@@ -164,5 +191,11 @@ const customStyles = ({
         height: 42,
         resizeMode: "stretch",
         margin: 10
+    },
+    footerText: {
+        fontSize: 20,
+        color: Color.muted,
+        fontWeight: "800",
+        paddingTop: '10%'
     },
 });

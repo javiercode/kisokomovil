@@ -14,7 +14,10 @@ const Color = Object.freeze({
   grayBackground: "#E2E2E2",
   black: "#000000",
   white: "#F4F4F4",
-  error: "#C70505",
+  error: "#C70505",  
+  light: "#F5F5F5",  
+  dark: "#343A3F",
+  muted: "#707981",
   text: {
     high: "rgba(0,0,0,0.87)", //High emphasis
     medium: "rgba(0,0,0,0.60)", //Medium emphasis

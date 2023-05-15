@@ -29,6 +29,7 @@ export default function Configuraciones({ route, navigation }: Props) {
     <Menu.Item leadingIcon="content-cut" onPress={() => {}} title="Cut" disabled />
     <Menu.Item leadingIcon="content-copy" onPress={() => {}} title="Copy" disabled /> */}
     <Menu.Item leadingIcon="account-edit" onPress={() => {}} title="Perfil" />
+    <Menu.Item leadingIcon="account" onPress={() => {}} title="Consentimiento" />
     <Menu.Item leadingIcon="arrow-left-circle" onPress={() => {navigation.navigate(MenuPathEnum.LOGOUT)}} title="Salir" />
       </View>
     </View>
