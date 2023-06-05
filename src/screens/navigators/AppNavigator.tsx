@@ -30,6 +30,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Color from "../../utils/styles/Color";
 import TabMovimiento from "../movimiento/Tab";
 import ListMovimiento from "../movimiento/List";
+import Test from "../test";
 import HeaderBack from "./HeaderBack";
 
 const { width, height } = Dimensions.get("window");
@@ -113,6 +114,9 @@ const AppNavigator = (props: any) => {
         }}
           name={MenuPathEnum.MOVIMIENTO_LIST} component={ListMovimiento} />
 
+        <Stack.Screen options={{
+          title: 'Compra'
+        }} name={MenuPathEnum.TAREA_EDIT} component={Test}/>
         <Stack.Screen options={{
           headerShown: false
         }}

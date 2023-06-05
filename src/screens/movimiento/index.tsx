@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ActivityIndicator, Alert, RefreshControl, StyleSheet, TouchableHighlight, View, SafeAreaView, ScrollView, Linking, ImageBackground, Image } from 'react-native';
-import { DataTable, Text, Searchbar, Avatar, Card, IconButton, Title, Paragraph, Menu, Button, Divider, Chip } from 'react-native-paper';
+import { DataTable, Text, Searchbar, Avatar, Card, IconButton, Title, Paragraph, Menu, Button, Divider, Chip, Banner } from 'react-native-paper';
 import Color from '../../utils/styles/Color';
 import { getAuth } from '../../store/login';
 import { getService, postService } from '../../utils/HttpService';
@@ -9,13 +9,9 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuPathEnum } from '../../utils/enums/Login.enum';
 import { formatDateTime } from '../../utils/GeneralUtils';
 import { EstadoTareaEnum } from '../../utils/enums/IGeneral';
-// import { BarCodeScanner } from 'expo-barcode-scanner';
-// import QRCodeScanner from 'react-native-qrcode-scanner';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { IProducto } from '../../utils/interfaces/IProducto';
-// import { RNCamera } from 'react-native-camera';
-// import { QrReader } from 'react-qr-reader';
 
 interface IMovimientoForm {
     codigoProducto: string,
@@ -97,12 +93,26 @@ export default function ListProceso({ route, navigation }: Props) {
     };
 
     return (
-        <ScrollView style={{backgroundColor:Color.white}}>
+        <View style={{flex: 1,backgroundColor: '#FFF',}}>
+            <Banner
+                style={{}}
+                visible={true}
+                actions={[
+                    {
+                        label: 'Cerrar',
+                        onPress: () => console.log('Banner cerrado'),
+                    },
+                ]}
+            >
+                Este es un banner de ejemplo.
+            </Banner>
+        <ScrollView style={{ backgroundColor: Color.white }}>
+            
             <View style={styles.bannerContainer}>
-                    <Image source={require(backgroundBanner)} style={styles.banner} />
-                </View>
+                <Image source={require(backgroundBanner)} style={styles.banner} />
+            </View>
             <View style={styles.container}>
-                
+
                 <View style={styles.topBarContainer}>
                     <Image source={require(backgroundImg)} style={styles.logo} />
                     <Text style={styles.footerText}>{`Bienvenido ${getAuth().username}`}</Text>
@@ -138,16 +148,16 @@ export default function ListProceso({ route, navigation }: Props) {
                             <IconButton icon="camera-enhance" size={50} iconColor={Color.white} onPress={() => setShowCam(!shoCam)} style={{ alignContent: 'center' }} />
                         </View>
                     </ScrollView>}
-                    {!shoCam && 
-                    <View>
-                        
-                        <Card style={{ width: '100%', height: '100%' }}>
-                            <Card.Content style={{ alignItems: 'center' }}>
-                                {/* <Button icon={"camera-enhance"} onPress={() => setShowCam(!shoCam)}>Comprar</Button> */}
-                                <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)} iconColor={Color.primary} style={{ alignContent: 'center' }} />
-                            </Card.Content>
-                        </Card>
-                    </View>
+                    {!shoCam &&
+                        <View>
+
+                            <Card style={{ width: '100%', height: '100%' }}>
+                                <Card.Content style={{ alignItems: 'center' }}>
+                                    {/* <Button icon={"camera-enhance"} onPress={() => setShowCam(!shoCam)}>Comprar</Button> */}
+                                    <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)} iconColor={Color.primary} style={{ alignContent: 'center' }} />
+                                </Card.Content>
+                            </Card>
+                        </View>
                     }
                     <View><Divider /></View>
 
@@ -180,8 +190,12 @@ export default function ListProceso({ route, navigation }: Props) {
                     </View>
                 </View>
             </View>
-
+            <View>
+                <Button onPress={() => { navigation.navigate(MenuPathEnum.TAREA_EDIT) }}>Test</Button>
+                <IconButton icon="camera-enhance" size={50} onPress={() => { navigation.navigate(MenuPathEnum.TAREA_EDIT) }} iconColor={Color.primary} style={{ alignContent: 'center' }} />
+            </View>
         </ScrollView>
+        </View>
     )
 }
 

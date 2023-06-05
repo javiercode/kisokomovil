@@ -24,13 +24,13 @@ export default function Configuraciones({ route, navigation }: Props) {
       </Card>
       <Permission camera={true} location={true} read={true} write={true} bakground={true} setPermission={hasPermission} />
       <View>
-      {/* <Menu.Item leadingIcon="redo" onPress={() => {}} title="Redo" />
+        {/* <Menu.Item leadingIcon="redo" onPress={() => {}} title="Redo" />
     <Menu.Item leadingIcon="undo" onPress={() => {}} title="Undo" />
     <Menu.Item leadingIcon="content-cut" onPress={() => {}} title="Cut" disabled />
     <Menu.Item leadingIcon="content-copy" onPress={() => {}} title="Copy" disabled /> */}
-    <Menu.Item leadingIcon="account-edit" onPress={() => {}} title="Perfil" />
-    <Menu.Item leadingIcon="account" onPress={() => {}} title="Consentimiento" />
-    <Menu.Item leadingIcon="arrow-left-circle" onPress={() => {navigation.navigate(MenuPathEnum.LOGOUT)}} title="Salir" />
+        <Menu.Item leadingIcon="account-edit" onPress={() => { }} title="Perfil" />
+        <Menu.Item leadingIcon="account" onPress={() => { }} title="Consentimiento" />
+        <Menu.Item leadingIcon="arrow-left-circle" onPress={() => { navigation.navigate(MenuPathEnum.LOGOUT) }} title="Salir" />
       </View>
     </View>
   )
