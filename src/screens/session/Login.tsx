@@ -14,6 +14,12 @@ import Color from "../../utils/styles/Color";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MenuPathEnum } from "../../utils/enums/Login.enum";
 import { getAuth } from "../../store/login";
+import {
+  LoginButton,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+} from 'react-native-fbsdk';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -32,6 +38,10 @@ export default function Login() {
   const [notificacion, setNotificacion] = useState(false)
   const [textoNotificacion, setTextoNotificacion] = useState("")
   const [loading, setLoading] = useState(false)
+  
+  const [userName, setUserName] = useState('');
+  const [token, setToken] = useState('');
+  const [profilePic, setProfilePic] = useState('');
 
   const logUrl = '../../assets/images/logoSimple.png';
   const backgroundImg = '../../assets/images/backgroundDefault.jpg';
@@ -66,6 +76,26 @@ export default function Login() {
       errorNotificacion("complete los campos: " + ErrorMensajesEnum.USUARIO_INVALIDO)
     }
     // const data = new FormData(event.currentTarget);
+  };
+
+  const getResponseInfo = (error:any, result:any) => {
+    if (error) {
+      //Alert for the Error
+      console.log('Error fetching data: ' + error.toString());
+    } else {
+      //response alert
+      console.log(JSON.stringify(result));
+      setUserName('Welcome ' + result.name);
+      setToken('User Token: ' + result.id);
+      setProfilePic(result.picture.data.url);
+    }
+  };
+
+  const onLogout = () => {
+    //Clear the state after logout
+    setUserName('');
+    setToken('');
+    setProfilePic('');
   };
 
   return (
@@ -119,6 +149,41 @@ export default function Login() {
           </View>
         </TouchableWithoutFeedback>
       </ImageBackground>
+      <View>
+        {profilePic ? (
+            <Image
+              source={{uri: profilePic}}
+              style={styleFB.imageStyle}
+            />
+          ) : null}
+        <Text style={styleFB.textStyle}> {userName} </Text>
+        <Text style={styleFB.textStyle}> {token} </Text>
+        <LoginButton
+           
+          // readPermissions={['public_profile']}
+          onLoginFinished={(error, result) => {
+            if (error) {
+              console.log(error);
+              console.log('Login has error: ' + result.error);
+            } else if (result.isCancelled) {
+              console.log('Login is cancelled.');
+            } else {
+              AccessToken.getCurrentAccessToken().then((data:any) => {
+                console.log(data.accessToken.toString());
+                const processRequest = new GraphRequest(
+                  '/me?fields=name,picture.type(large)',
+                  null,
+                  getResponseInfo,
+                );
+                // Start the graph request.
+                new GraphRequestManager()
+                  .addRequest(processRequest).start();
+              });
+            }
+          }}
+          onLogoutFinished={onLogout}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -208,4 +273,41 @@ const styles = StyleSheet.create({
   subcontainer: {
     paddingTop: 30,
   }
+});
+
+
+const styleFB = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textStyle: {
+    fontSize: 20,
+    color: '#000',
+    textAlign: 'center',
+    padding: 10,
+  },
+  imageStyle: {
+    width: 200,
+    height: 300,
+    resizeMode: 'contain',
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 20,
+  },
+  footerHeading: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: 'grey',
+  },
+  footerText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'grey',
+  },
 });
