@@ -7,8 +7,8 @@ import { MenuPathEnum } from './enums/Login.enum';
 import { ReducerType } from './interfaces/ILoginStore';
 
 
-// const urlBase = ("http://api.dev.bg.com.bo/micliente/api/v3");
-const urlBase = ("http://192.168.0.13:5000/kiosko/api/v1");
+const urlBase = ("https://api-kiosko-production.up.railway.app/kiosko/api/v1");
+// const urlBase = ("http://192.168.0.13:5000/kiosko/api/v1");
 async function postService(url: string, data: any): Promise<MessageResponse> {
   return methodService('POST', url, data);
 };
