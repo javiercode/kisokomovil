@@ -1,5 +1,4 @@
 import { Alert, DeviceEventEmitter, ToastAndroid } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 import { authorized, getAuth, noAuthorized, signIn, signOut, updateToken } from '../store/login';
 import { MessageResponse, ResponseFetch } from './interfaces/IGeneral';
 import { useNavigation } from '@react-navigation/native';
@@ -80,66 +79,13 @@ async function methodService(type: string, url: string, dataPost: any): Promise<
   }
 };
 
-async function formDataService(url: string, dataForm: any, setUpload: (progress: number) => void): Promise<MessageResponse> {
-  let response: MessageResponse = { success: false, message: 'Error cargar Archivos', code: 0 };
-  try {
-    const result = await ReactNativeBlobUtil.fetch('POST', urlBase + url, {
-      Authorization: `Bearer ${getAuth().token}`,
-      'Content-Type': 'multipart/form-data',
-    }, dataForm).uploadProgress((written, total) => {
-      setUpload((written / total))
-    }).progress((received, total) => {
-      setUpload((received / total))
-    });
-    let resultInfo = result.info();
-    
-    if (result && resultInfo.status==200) {
-      //TODO:Aqui actualizar el token
-    //   let authorization = response.headers.get('authorization') as string;
-    //   updateToken(authorization);
-      response = result.json() as MessageResponse;
-      ToastAndroid.showWithGravityAndOffset(
-        response.message,
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-    }else{
-      switch (resultInfo.status) {
-        case 401:
-          response.message = "Demasiado tiempo inactivo, vuelva a loguearse";
-          DeviceEventEmitter.emit(ReducerType.TOKEN_INVALID);
-          // noAuthorized()
-          break;
-        case 500:
-          response.message = "Error interno, vuelva a intentarlo";
-          break;
-        case 400:
-          response.message = "Petición incorrecta, reintente otra vez";
-          break;
-      }
-    }
-  } catch (error) {
-    response.success = false;
-    response.message = 'Error de conexion';
-    return response;
-  }
-  ToastAndroid.showWithGravityAndOffset(
-    response.message,
-    ToastAndroid.LONG,
-    ToastAndroid.BOTTOM,
-    25,
-    50
-  );
-  return response;
-};
+
 
 async function doLogin(user: string, password: string): Promise<MessageResponse> {
   let response: MessageResponse = { success: false, message: 'Error de conexion', code: 0 };
   try {
 
-    const username = user.toLocaleUpperCase();
+    const username = user.toLocaleLowerCase();
     let headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json'
@@ -195,6 +141,5 @@ export {
   getService,
   putService,
   deleteService,
-  doLogin,
-  formDataService
+  doLogin
 };

@@ -24,7 +24,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import JailMonkey from 'jail-monkey'
+// import JailMonkey from 'jail-monkey'
 import { Provider } from 'react-redux';
 import { store } from './src/store';
 import NotAuthorized from './src/screens/session/NotAuthorized';
@@ -42,8 +42,8 @@ function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
-    console.log("rooted", JailMonkey.isJailBroken())
-    setIsRooted(JailMonkey.isJailBroken())
+    // console.log("rooted", JailMonkey.isJailBroken())
+    // setIsRooted(JailMonkey.isJailBroken())
   }, []);
 
   const backgroundStyle = {

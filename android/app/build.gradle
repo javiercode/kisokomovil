@@ -98,8 +98,8 @@ android {
         applicationId "com.kioskomovil"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "0.0.3"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
 
@@ -154,6 +154,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 
     implementation project(':react-native-vector-icons')
 

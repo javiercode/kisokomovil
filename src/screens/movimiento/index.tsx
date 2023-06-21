@@ -12,6 +12,7 @@ import { EstadoTareaEnum } from '../../utils/enums/IGeneral';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { IProducto } from '../../utils/interfaces/IProducto';
+import ControlPermisos from '../../components/ControlPermission';
 
 interface IMovimientoForm {
     codigoProducto: string,
@@ -37,12 +38,10 @@ export default function ListProceso({ route, navigation }: Props) {
     }, [saldo]);
 
     const onSuccess = ({ data }: { data: string }) => {
-        console.log(data);
         setData(data);
         getService(`/producto/${data}`)
             .then(res => {
                 setProducto(res.data);
-                console.log(res.data)
             });
     };
 
@@ -56,12 +55,14 @@ export default function ListProceso({ route, navigation }: Props) {
                 codigoProducto: codigo
             };
 
+            console.log("createDto",createDto)
             if (codigo !== "") {
                 postService("/movimiento/create", createDto).then((result) => {
                     console.log("result.message", result.message)
                     setMensaje(result.message);
                     if (result.success) {
                         setProducto(null)
+                        getSaldo();
                     }
                 });
             } else {
@@ -76,8 +77,11 @@ export default function ListProceso({ route, navigation }: Props) {
         // setLoading(true);
         getService(`/movimiento/list/0/1`)
             .then(res => {
+                console.log("saldo", res)
                 if (res.success) {
                     setSaldo(res.suma || 0);
+                }else{
+                    setSaldo(0)
                 }
             }).catch(error => {
                 throw new Error(error);
@@ -93,8 +97,8 @@ export default function ListProceso({ route, navigation }: Props) {
     };
 
     return (
-        <View style={{flex: 1,backgroundColor: '#FFF',}}>
-            <Banner
+        <View style={{flex: 1,backgroundColor: Color.secondary,}}>
+            {/* <Banner
                 style={{}}
                 visible={true}
                 actions={[
@@ -104,23 +108,28 @@ export default function ListProceso({ route, navigation }: Props) {
                     },
                 ]}
             >
-                Este es un banner de ejemplo.
-            </Banner>
-        <ScrollView style={{ backgroundColor: Color.white }}>
-            
-            <View style={styles.bannerContainer}>
                 <Image source={require(backgroundBanner)} style={styles.banner} />
+            </Banner> */}
+            <View style={styles.bannerContainer}>
+            <Image source={require(backgroundImg)} style={styles.logo} />
+                    <Text style={styles.footerText}>{`Bienvenido ${getAuth().username}`}</Text>
             </View>
+        <ScrollView style={{ backgroundColor: Color.white }}>
+            <ControlPermisos/>
+            
+            {/* <View style={styles.bannerContainer}>
+                <Image source={require(backgroundBanner)} style={styles.banner} />
+            </View> */}
             <View style={styles.container}>
 
-                <View style={styles.topBarContainer}>
+                {/* <View style={styles.topBarContainer}>
                     <Image source={require(backgroundImg)} style={styles.logo} />
                     <Text style={styles.footerText}>{`Bienvenido ${getAuth().username}`}</Text>
-                </View>
+                </View> */}
                 <View style={styles.topBarContainer}>
                     <Card style={{ width: '40%', height: '100%' }}>
                         <Card.Content style={{ alignItems: 'center' }}>
-                            <Avatar.Icon size={40} icon="cash" color={Color.white} style={{ backgroundColor: Color.primary }} />
+                            <Avatar.Icon size={40} icon="cash" color={Color.white} style={{ backgroundColor: Color.secondary }} />
 
                         </Card.Content>
                     </Card>
@@ -154,7 +163,7 @@ export default function ListProceso({ route, navigation }: Props) {
                             <Card style={{ width: '100%', height: '100%' }}>
                                 <Card.Content style={{ alignItems: 'center' }}>
                                     {/* <Button icon={"camera-enhance"} onPress={() => setShowCam(!shoCam)}>Comprar</Button> */}
-                                    <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)} iconColor={Color.primary} style={{ alignContent: 'center' }} />
+                                    <IconButton icon="camera-enhance" size={50} onPress={() => setShowCam(!shoCam)} iconColor={Color.secondary} style={{ alignContent: 'center' }} />
                                 </Card.Content>
                             </Card>
                         </View>
@@ -178,7 +187,8 @@ export default function ListProceso({ route, navigation }: Props) {
                                         <IconButton
                                             icon="cart-arrow-up"
                                             size={20}
-                                            onPress={() => saveMovimiento(producto.codigo)}
+                                            // onPress={() => saveMovimiento(producto.codigo)}
+                                            onPress={() => saveMovimiento(data)}
                                         />
                                     </DataTable.Cell>
                                 </DataTable.Row>
@@ -190,10 +200,10 @@ export default function ListProceso({ route, navigation }: Props) {
                     </View>
                 </View>
             </View>
-            <View>
+            {/* <View>
                 <Button onPress={() => { navigation.navigate(MenuPathEnum.TAREA_EDIT) }}>Test</Button>
                 <IconButton icon="camera-enhance" size={50} onPress={() => { navigation.navigate(MenuPathEnum.TAREA_EDIT) }} iconColor={Color.primary} style={{ alignContent: 'center' }} />
-            </View>
+            </View> */}
         </ScrollView>
         </View>
     )
@@ -249,7 +259,6 @@ const styles = StyleSheet.create({
     centerText: {
         flex: 1,
         fontSize: 25,
-        // padding: 32,
         color: '#777',
         fontWeight: 'bold'
     },
@@ -270,8 +279,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        // paddingLeft: 20,
-        // paddingRight: 20,
         paddingTop: 0,
         // paddingBottom: 5,
     },
@@ -301,7 +308,7 @@ const styles = StyleSheet.create({
     },
     footerText: {
         fontSize: 20,
-        color: Color.muted,
+        color: Color.white,
         fontWeight: "800",
         paddingTop: '10%'
     },

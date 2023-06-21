@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">KioskoMovil</string>
     <string name="facebook_app_id">1193481688013363</string>
+    <string name="facebook_client_token">9ac3a3298e635615aea1552968ab3efa</string>
 </resources>

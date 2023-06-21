@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, StyleSheet, View, Image, Dimensions } from 'react-native';
 import { SafeAreaView, ScrollView } from 'react-native';
 import { DataTable, Text, Searchbar, Avatar, Card, IconButton, Title, Paragraph, Divider } from 'react-native-paper';
 import Color from '../../utils/styles/Color';
@@ -11,6 +11,10 @@ import { MenuPathEnum } from '../../utils/enums/Login.enum';
 import { IMarca } from '../../utils/interfaces/IMarca';
 import CardContent from 'react-native-paper/lib/typescript/src/components/Card/CardContent';
 
+
+const { width, height } = Dimensions.get('screen')
+const backgroundImg = '../../assets/images/banner-productos.png';
+
 type Props = NativeStackScreenProps<any, MenuPathEnum.PRODUCTO>;
 export default function Marca({ route, navigation }: Props) {
     const [paginaActual, setPaginaActual] = useState(0);
@@ -18,10 +22,10 @@ export default function Marca({ route, navigation }: Props) {
     const [refreshing, setRefreshing] = useState(false);
     const [dataList, setDatalist] = useState([]);
     const [paginaTotal, setPaginaTotal] = useState(0);
-    const [saldo, setSaldo] = useState<number>(100.0);
+    const [saldo, setSaldo] = useState<number>(0);
     
     useEffect(() => {
-        setSaldo(100.00)
+        setSaldo(0.00)
         getList(paginaActual);
     }, []);
 
@@ -29,7 +33,7 @@ export default function Marca({ route, navigation }: Props) {
     }, [dataList]);    
 
     const onRefresh = useCallback(() => {
-        setSaldo(100.0)
+        setSaldo(0.0)
         getList(paginaActual)
     }, []);
 
@@ -59,6 +63,11 @@ export default function Marca({ route, navigation }: Props) {
     }
 
     return (
+        <View style={{flex: 1}}>
+            <View style={styles.bannerContainer}>
+            <Image source={require(backgroundImg)} style={styles.logo} />
+                    <Text style={styles.footerText}>{`Bienvenido ${getAuth().username}`}</Text>
+            </View>
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
             <View style={styles.container}>
                 
@@ -91,6 +100,7 @@ export default function Marca({ route, navigation }: Props) {
             
             </View>
         </ScrollView>
+            </View>
     )
 }
 
@@ -148,54 +158,20 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         alignItems: "center",
     },
+    bannerContainer: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        // paddingLeft: 20,
+        // paddingRight: 20,
+        paddingTop: 0,
+        // paddingBottom: 5,
+    },
+    logo: {
+        width: width, height: 100,
+        // marginTop: 33,
+        alignSelf: 'center',
+    },
 })
-
-const customStyles = ({
-    rows: {
-        style: {
-            minHeight: '72px', // override the row height
-        }
-    },
-    headCells: {
-        style: {
-            paddingLeft: '8px', // override the cell padding for head cells
-            paddingRight: '8px',
-            fontWeight: 'bold',
-        },
-    },
-    cells: {
-        style: {
-            paddingLeft: '8px', // override the cell padding for data cells
-            paddingRight: '8px',
-        },
-    },
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 2
-    },
-    sectionStyle: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        textShadowColor: 'blue',
-        borderWidth: 0.5,
-        borderColor: '#000',
-        height: 60,
-        borderRadius: 5,
-        margin: 10,
-    },
-    icono: {
-        width: 50,
-        height: 42,
-        resizeMode: "stretch",
-        margin: 10
-    },
-    footerText: {
-        fontSize: 20,
-        color: Color.muted,
-        fontWeight: "800",
-        paddingTop: '10%'
-    },
-});
